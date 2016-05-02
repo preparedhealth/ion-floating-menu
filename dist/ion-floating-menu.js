@@ -27,8 +27,8 @@
         }
    }
     
-    ionFloatingMenu.$inject   = ['$scope', '$ionicBackdrop'];
-    function ionFloatingMenu($scope, $ionicBackdrop){
+    ionFloatingMenu.$inject   = ['$scope'];
+    function ionFloatingMenu($scope){
         $scope.isOpen = false;
                     $scope.open = function() {
                         $scope.isOpen = !$scope.isOpen;
@@ -43,7 +43,11 @@
             $scope.icon = menuOpenIcon;
             $scope.iconColor = menuOpenIconColor;
             if ( $scope.opacity ){
-                $ionicBackdrop.retain();
+                var overlays = document.getElementsByName('floating-menu-overlay');
+                for ( var i = 0 ; i < overlays.length; i++){ 
+                    overlays[i].style.opacity = $scope.opacity;
+                    overlays[i].style.display = 'block';
+                } 
             }
         };
         $scope.setClose = function() {
@@ -51,7 +55,10 @@
             $scope.icon = menuIcon;
             $scope.iconColor = menuIconColor;
             if ( $scope.opacity ){
-                $ionicBackdrop.release();
+                var overlays = document.getElementsByName('floating-menu-overlay');
+                for ( var i = 0 ; i < overlays.length; i++){ 
+                    overlays[i].style.display = 'none';
+                } 
             }
         };
         var menuColor = $scope.menuColor || '#2AC9AA';
