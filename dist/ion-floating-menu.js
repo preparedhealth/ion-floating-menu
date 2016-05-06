@@ -27,8 +27,8 @@
         }
    }
     
-    ionFloatingMenu.$inject   = ['$scope'];
-    function ionFloatingMenu($scope){
+    ionFloatingMenu.$inject   = ['$scope', '$ionicBackdrop'];
+    function ionFloatingMenu($scope, $ionicBackdrop){
         $scope.isOpen = false;
                     $scope.open = function() {
                         $scope.isOpen = !$scope.isOpen;
@@ -42,23 +42,16 @@
             $scope.buttonColor = menuOpenColor;
             $scope.icon = menuOpenIcon;
             $scope.iconColor = menuOpenIconColor;
-            if ( $scope.opacity ){
-                var overlays = document.getElementsByName('floating-menu-overlay');
-                for ( var i = 0 ; i < overlays.length; i++){ 
-                    overlays[i].style.opacity = $scope.opacity;
-                    overlays[i].style.display = 'block';
-                } 
+            if ( $scope.backdrop ){
+                $ionicBackdrop.retain();
             }
         };
         $scope.setClose = function() {
             $scope.buttonColor = menuColor;
             $scope.icon = menuIcon;
             $scope.iconColor = menuIconColor;
-            if ( $scope.opacity ){
-                var overlays = document.getElementsByName('floating-menu-overlay');
-                for ( var i = 0 ; i < overlays.length; i++){ 
-                    overlays[i].style.display = 'none';
-                } 
+            if ( $scope.backdrop ){
+                $ionicBackdrop.release();
             }
         };
         var menuColor = $scope.menuColor || '#2AC9AA';
@@ -67,7 +60,7 @@
         var menuOpenColor = $scope.menuOpenColor || '#2AC9AA';
         var menuOpenIcon = $scope.menuOpenIcon || 'ion-minus';
         var menuOpenIconColor = $scope.menuOpenIconColor || '#fff';
-        var opacity = $scope.opacity || false;
+        var backdrop = $scope.backdrop || false;
         $scope.setClose();
         $scope.hasFooter = $scope.hasFooter || false;
         if ($scope.hasFooter) {
@@ -116,7 +109,7 @@ angular.module('ion-floating-menu', [])
                 menuIcon: '@?',
                 menuIconColor: '@?',
                 hasFooter: '=?',
-                opacity: '=?'
+                backdrop: '=?'
             },
             template: '<ul id="floating-menu"  \n\
                             ng-style="{\'bottom\' : \'{{bottomValue}}\'}" \n\
